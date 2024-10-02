@@ -1,40 +1,56 @@
 // The secret santa challenge
-/* 1- Create an array with names
-2- Create an object array contain properties giver and receiver. Receivers will be assigned from loop
-3- Create a function loop that iterate in each name of givers, assing value to giver, gets the list of givers, remove the givers[i] and save to temp, 
-sort a number from 1-temp.length() and save to num, receiver: temp[num]. Create an array givers2 containing givers[-temp[num]] 
+/* 1- Receives an array with names
+2- Create an object array containing properties giver and receiver. Receivers will be assigned from loop 
+3- Creates a function loop that iterate in each name of givers, assings a value to giver accordign to i,
+gets the list of givers, remove the givers[i] and save to temp
+4- sort a number from 0 to temp.length()-1 and save to drawedNum, receiverwill receive temp[num]. 
+The loop ends by creating the array givers2 containing all individuals in givers except for the one 
+assigned as receiver.
+5- The loop stops when i<givers.length-2 (2 individuals not yet assigned as receivers) to avoid 
+undefined values. 
  */
-const givers: string[]= ['Andre', 'Brad', 'Claudia', 'Denise', 'Emily','Fabby'] as const;
+let givers= ['Andre', 'Brad', 'Claudia', 'Denise', 'Emily','Fabby'];
 interface SecretSantaList {
     giver: string;
     receiver: string;
 }
-const secretSantaList:  SecretSantaList[] = [];
+let secretSantaList:  SecretSantaList[] = [];
 
-function drawInteger(length: number): number {
+function drawInteger(length: number) {
     return Math.floor(Math.random() * length); // Generates a number between 0 and 5
 }
 
 
-let givers2: string[]=[...givers];
-for (let i=0; i < givers.length; i++) {
-    //console.log(i);
-    let temp:string[]=[...givers2];
-    //console.log(`Temp is ${temp}`);
-    let j:number=temp.indexOf(givers[i])
-    //console.log(`j is ${j}`)
+let givers2=[...givers];
+for (let i=0; i < givers.length-2; i++) {
+    let temp=[...givers2];
+    let j=temp.indexOf(givers[i])
         if (j > -1) {
             temp.splice(j,1); 
             };
-    //console.log(`Temp after splice is ${temp}`);
-    let size: number= temp.length;
-    //console.log(`Size is ${size}`);
-    let drawedNum: number=drawInteger(size);
-    //console.log(`Drawed number is ${drawedNum}`)
+    let size= temp.length;
+    let drawedNum=drawInteger(size);
     secretSantaList.push({ giver: givers[i], receiver: temp[drawedNum]});
-    //console.log(`Receiver: ${temp[drawedNum]}`)
-    let index:number = givers2.indexOf(temp[drawedNum]);
+    let index= givers2.indexOf(temp[drawedNum]);
     givers2.splice(index,1);
-    //console.log(`givers2 after splice is ${givers2}`)
 }
+
+if(givers[givers.length-1]==givers2[1]){
+    secretSantaList.push({ giver: givers[givers.length-1], receiver: givers2[0]});
+    secretSantaList.push({ giver: givers[givers.length-2], receiver: givers2[1]}); 
+} else {
+    for (let i=givers.length-2; i < givers.length; i++) {
+    let temp=[...givers2];
+    let j=temp.indexOf(givers[i]);
+        if (j > -1) {
+            temp.splice(j,1); 
+            };
+    let size= temp.length;
+    let drawedNum=drawInteger(size);
+    secretSantaList.push({ giver: givers[i], receiver: temp[drawedNum]});
+    let index= givers2.indexOf(temp[drawedNum]);
+    givers2.splice(index,1);
+    }
+}
+
 console.log(secretSantaList);
