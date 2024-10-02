@@ -1,5 +1,5 @@
-# My first JavaScript projects
+# The Secret Santa Coding Challenge (secret-santa-draw)
 
-This project contains a set of challenges I executed while learning Typescript.
+ The Secret Santa Coding Challenge (secret-santa-draw) is a program that randomly assigns each participant in a list to another participant as their Secret Santa. Each participant should give a gift to exactly one other participant and receive a gift from exactly one other participant.
 
-The first challenge is 1) The Secret Santa Coding Challenge (secret-santa-draw) which is a program that randomly assigns each participant in a list to another participant as their Secret Santa. Each participant should give a gift to exactly one other participant and receive a gift from exactly one other participant.
+ Type the list of participants in the file src/index.ts (line 12) to create an array called givers.
