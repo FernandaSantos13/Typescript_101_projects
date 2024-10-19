@@ -5,9 +5,8 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.2"
   },
-  "main": "dist/mars-rovers/index.js",
-  "types": "dist/mars-rovers/index.d.ts",
+  "main": "dist/consways-game-of-life/index.js",
   "scripts": {
-    "dev": "ts-node src/mars-rovers/index.ts"
+    "dev": "ts-node src/consways-game-of-life/index.ts"
   }
 }
