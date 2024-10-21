@@ -16,14 +16,51 @@ of the other elements!!!
 */
 
 const getGridSize = (input: number[][]) => {
-
+    const maxX = input[0].length;
+    const maxY = input.length;
+    return { maxX, maxY }
 }
 
-const calculateGen = (input: number[][], gridSize: number[]) => {
+type Grid = ReturnType<typeof getGridSize>;
 
+const updatedStatus = (x: number, y: number, cell: number, sum: number) => {
+    if (cell === 1 && sum > 3) {
+        return 0;
+    }
+    else if (cell === 1 && sum < 2) {
+        return 0;
+    }
+    else if (cell === 0 && sum === 3) {
+        return 1;
+    }
+    else {
+        return cell;
+    }
 }
 
+const calcSum = (input: number[][], x: number, y: number, gridSize: Grid) => {
+    //let tobesummed: number[] = [];
+    //if () {}
+    const sum = input[x-1][y+1] + input[x][y+1] + input[x+1][y+1] + input[x-1][y] + input[x+1][y] + input[x-1][y-1] 
+    + input[x][y-1] + input[x+1][y-1];
+    return sum;
+} // Think/test what happens if the position is outof bounds. Work on thAT 
 
+
+const calculateGen = (input: number[][], gridSize: Grid) => {
+    let result: number[][] = [...input];
+    input.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+            const cell = value;
+            const x = rowIndex;
+            const y = colIndex;
+            const sum: number = calcSum(input, x, y, gridSize);
+            const newStatus: number = updatedStatus(x, y, cell, sum);
+            result[x][y] = newStatus;
+        });
+    });
+    return result;
+}
 
 const main = (input: number[][]) => {
     const gridSize = getGridSize(input);
@@ -33,15 +70,15 @@ const main = (input: number[][]) => {
         console.log("Generation " + i + ":");
         console.log(nextGeneration);
         initialGeneration = nextGeneration;
-        //await/sleep
+        //await sleep(1000);
     }
 }
 
-const generation0: number [][] = [[1, 0, 1, 1],
-    [1, 1, 0, 0], 
-    [1, 1, 0, 1], 
-    [0, 1, 1, 0], 
-    [0, 0, 0, 0]
+const generation0: number[][] = [[1, 0, 1, 1],
+[1, 1, 0, 0],
+[1, 1, 0, 1],
+[0, 1, 1, 0],
+[0, 0, 0, 0]
 ];
-    
+
 main(generation0);

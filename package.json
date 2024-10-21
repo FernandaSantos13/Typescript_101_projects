@@ -7,6 +7,6 @@
   },
   "main": "dist/consways-game-of-life/index.js",
   "scripts": {
-    "dev": "ts-node src/consways-game-of-life/index.ts"
+    "dev": "ts-node src/conways-game-of-life/index.ts"
   }
 }
