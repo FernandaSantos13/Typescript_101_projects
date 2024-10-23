@@ -15,13 +15,13 @@ IMPORTANT: I will probably have to create a new array to push the new elements t
 of the other elements!!! 
 */
 
-const getGridSize = (input: number[][]) => {
+/*const getGridSize = (input: number[][]) => {
     const maxX = input[0].length;
     const maxY = input.length;
     return { maxX, maxY }
-}
+}*/
 
-type Grid = ReturnType<typeof getGridSize>;
+//type Grid = ReturnType<typeof getGridSize>;
 
 const updatedStatus = (x: number, y: number, cell: number, sum: number) => {
     if (cell === 1 && sum > 3) {
@@ -38,40 +38,63 @@ const updatedStatus = (x: number, y: number, cell: number, sum: number) => {
     }
 }
 
-const calcSum = (input: number[][], x: number, y: number, gridSize: Grid) => {
-    //let tobesummed: number[] = [];
-    //if () {}
-    const sum = input[x-1][y+1] + input[x][y+1] + input[x+1][y+1] + input[x-1][y] + input[x+1][y] + input[x-1][y-1] 
-    + input[x][y-1] + input[x+1][y-1];
-    return sum;
-} // Think/test what happens if the position is outof bounds. Work on thAT 
+const calcSum = (input: number[][], x: number, y: number) => {
+    let toBeSummed: number[] = [
+        input[y-1]?.[x+1],
+        input[y]?.[x+1],
+        input[y+1]?.[x+1],
+        input[y+1]?.[x],
+        input[y+1]?.[x-1],
+        input[y]?.[x-1],
+        input[y-1]?.[x-1],
+        input[y-1]?.[x]   
+    ];
+    const toBeSummedClean = toBeSummed.filter(value => value !== undefined);
+    let sum = 0;
+    for (const value of toBeSummedClean) {
+        sum += value;    
+    }
+    return sum;    
+}
 
 
-const calculateGen = (input: number[][], gridSize: Grid) => {
+const calculateGen = (input: number[][]) => {
     let result: number[][] = [...input];
     input.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
             const cell = value;
-            const x = rowIndex;
-            const y = colIndex;
-            const sum: number = calcSum(input, x, y, gridSize);
+            const y = rowIndex;
+            const x = colIndex;
+            const sum: number = calcSum(input, x, y);
             const newStatus: number = updatedStatus(x, y, cell, sum);
-            result[x][y] = newStatus;
+            result[y][x] = newStatus;
         });
     });
     return result;
+} //error is here! 
+
+function sleep(time: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, time));
 }
 
+
 const main = (input: number[][]) => {
-    const gridSize = getGridSize(input);
+    //const gridSize = getGridSize(input);
     let initialGeneration = [...input];
-    for (let i = 0; i > -1; i++) {
-        const nextGeneration = calculateGen(initialGeneration, gridSize);
-        console.log("Generation " + i + ":");
-        console.log(nextGeneration);
-        initialGeneration = nextGeneration;
-        //await sleep(1000);
+    console.log("Generation 0:");
+    console.log(initialGeneration);
+    async function startLoop() {
+        let i = 1;
+        while (true) {
+            const nextGeneration = calculateGen(initialGeneration);
+            console.log("Generation " + i + ":");
+            console.log(nextGeneration);
+            initialGeneration = nextGeneration;
+            await sleep(1000);
+            i++;
+        }
     }
+    startLoop();
 }
 
 const generation0: number[][] = [[1, 0, 1, 1],
