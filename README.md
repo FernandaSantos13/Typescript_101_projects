@@ -8,7 +8,7 @@ The second challenge is 2) The MARS Rover Coding Challenge (mars-rovers) which i
 'M' means move forward one grid point, and maintain the same heading.
 Input should be added to variable input1 in the end of file src/mars-rovers/index.ts.
 
-The thirdd challenge is 3)The Conway's game of life (conways-game) which simulates a finite two-dimensional orthogonal grid of square cells, each of which (at any given time) is in one of two possible states, "live" or "dead". Every cell interacts with its neighbours, which are the cells that are directly horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
+The third challenge is 3)The Conway's game of life (conways-game) which simulates a finite two-dimensional orthogonal grid of square cells, each of which (at any given time) is in one of two possible states, "live" or "dead". Every cell interacts with its neighbours, which are the cells that are directly horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
 Any live cell with fewer than two live neighbours dies (referred to as underpopulation).
 Any live cell with more than three live neighbours dies (referred to as overpopulation).
 Any live cell with two or three live neighbours lives, unchanged, to the next generation.
