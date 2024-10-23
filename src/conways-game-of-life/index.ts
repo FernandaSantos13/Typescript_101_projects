@@ -1,28 +1,3 @@
-/* 1- ler meu input and save its dimensions to a variable (gridSize)
-2- Create a copy of my input which can be modified (initialGeneration)
-3-  Give the copy and gridSize to a function which will calculate edit and return the final array
-4-  The main funstion will print to the console the final array and save it to the variable initialGeneration, 
-so the loop can re-start 
-5- To wait 1s between generations, use await/sleep from (Andre's e-mail)
-6- Still thinking about the function to calculate next generation, but it might be something related to: for 
-each element of array get the sum of cells around and test conditions to see if the element will receive 0 or 1.
-The conditions to be tested are:
-    a) if cell =1 AND sum<2, cell = 0
-    b) if cell =1 AND sum>3, cell = 0
-    c) if cell = 0 AND sum = 3, cell = 1
-    d) else cell = cell
-IMPORTANT: I will probably have to create a new array to push the new elements to it. Otherwise it can change the sum 
-of the other elements!!! 
-*/
-
-/*const getGridSize = (input: number[][]) => {
-    const maxX = input[0].length;
-    const maxY = input.length;
-    return { maxX, maxY }
-}*/
-
-//type Grid = ReturnType<typeof getGridSize>;
-
 const updatedStatus = (x: number, y: number, cell: number, sum: number) => {
     if (cell === 1 && sum > 3) {
         return 0;
@@ -36,7 +11,7 @@ const updatedStatus = (x: number, y: number, cell: number, sum: number) => {
     else {
         return cell;
     }
-}
+} //Apply the conditions for updating status of a cell 
 
 const calcSum = (input: number[][], x: number, y: number) => {
     let toBeSummed: number[] = [
@@ -55,11 +30,11 @@ const calcSum = (input: number[][], x: number, y: number) => {
         sum += value;    
     }
     return sum;    
-}
+} // Calculates and return the sum of neighbors alive around the cell of interest
 
 
 const calculateGen = (input: number[][]) => {
-    let result: number[][] = [...input];
+    let result: number[][] = input.map(row => [...row]);
     input.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
             const cell = value;
@@ -71,7 +46,7 @@ const calculateGen = (input: number[][]) => {
         });
     });
     return result;
-} //error is here! 
+}  // Calculates the next generation using the returns of functions calcSum() and updatedStatus()
 
 function sleep(time: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, time));
