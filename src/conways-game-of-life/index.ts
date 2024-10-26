@@ -1,4 +1,4 @@
-const updateCellStatus = (x: number, y: number, currentCellStatus: number, neighbourSum: number) => {
+const updateCellStatus = (currentCellStatus: number, neighbourSum: number) => {
     if (currentCellStatus === 1 && neighbourSum > 3) {
         return 0;
     }
@@ -8,21 +8,19 @@ const updateCellStatus = (x: number, y: number, currentCellStatus: number, neigh
     else if (currentCellStatus === 0 && neighbourSum === 3) {
         return 1;
     }
-    else {
-        return currentCellStatus;
-    }
+    return currentCellStatus;
 } //Apply the conditions for updating the status of a cell 
 
-const calculateNeighbourSum = (grid: number[][], x: number, y: number) => {
-    let toBeSummed: number[] = [
-        grid[y-1]?.[x+1],
-        grid[y]?.[x+1],
-        grid[y+1]?.[x+1],
-        grid[y+1]?.[x],
-        grid[y+1]?.[x-1],
-        grid[y]?.[x-1],
-        grid[y-1]?.[x-1],
-        grid[y-1]?.[x]   
+const calculateNeighbourSum = (grid: number[][], colIndex: number, rowIndex: number) => {
+    const toBeSummed: number[] = [
+        grid[rowIndex-1]?.[colIndex+1],
+        grid[rowIndex]?.[colIndex+1],
+        grid[rowIndex+1]?.[colIndex+1],
+        grid[rowIndex+1]?.[colIndex],
+        grid[rowIndex+1]?.[colIndex-1],
+        grid[rowIndex]?.[colIndex-1],
+        grid[rowIndex-1]?.[colIndex-1],
+        grid[rowIndex-1]?.[colIndex]   
     ];
     const toBeSummedClean = toBeSummed.filter(value => value !== undefined);
     let neighbourSum = 0;
@@ -38,18 +36,16 @@ const calculateNextGeneration = (grid: number[][]) => {
     grid.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
             const currentCellStatus = value;
-            const y = rowIndex;
-            const x = colIndex;
-            const neighbourSum: number = calculateNeighbourSum(grid, x, y);
-            const newCellStatus: number = updateCellStatus(x, y, currentCellStatus, neighbourSum);
-            nextGeneration[y][x] = newCellStatus;
+            const neighbourSum: number = calculateNeighbourSum(grid, colIndex, rowIndex);
+            const newCellStatus: number = updateCellStatus(currentCellStatus, neighbourSum);
+            nextGeneration[rowIndex][colIndex] = newCellStatus;
         });
     });
     return nextGeneration;
 }  // Calculates the next generation using the returns of functions calculateNeighbourSum() and updateCellStatus()
 
-function sleep(time: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, time));
+function sleep(milliseconds: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 
