@@ -12,22 +12,16 @@ const updateCellStatus = (currentCellStatus: number, neighbourSum: number) => {
 } //Apply the conditions for updating the status of a cell 
 
 const calculateNeighbourSum = (grid: number[][], colIndex: number, rowIndex: number) => {
-    const toBeSummed: number[] = [
-        grid[rowIndex-1]?.[colIndex+1],
-        grid[rowIndex]?.[colIndex+1],
-        grid[rowIndex+1]?.[colIndex+1],
-        grid[rowIndex+1]?.[colIndex],
-        grid[rowIndex+1]?.[colIndex-1],
-        grid[rowIndex]?.[colIndex-1],
-        grid[rowIndex-1]?.[colIndex-1],
-        grid[rowIndex-1]?.[colIndex]   
-    ];
-    const toBeSummedClean = toBeSummed.filter(value => value !== undefined);
     let neighbourSum = 0;
-    for (const value of toBeSummedClean) {
-        neighbourSum += value;    
+    for (let i = colIndex - 1; i <= colIndex + 1; i++) {
+        for (let j = rowIndex - 1; j <= rowIndex + 1; j++) {
+            if (i === colIndex && j === rowIndex) continue;
+            if (i >= 0 && i < grid[0].length && j >= 0 && j < grid.length) {
+                neighbourSum += grid[j][i];
+            }
+        }
     }
-    return neighbourSum;    
+    return neighbourSum;
 } // Calculates and return the sum of neighbors alive around the cell of interest
 
 
@@ -44,27 +38,20 @@ const calculateNextGeneration = (grid: number[][]) => {
     return nextGeneration;
 }  // Calculates the next generation using the returns of functions calculateNeighbourSum() and updateCellStatus()
 
-function sleep(milliseconds: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
 
 
 const main = (grid: number[][]) => {
     let initialGeneration = [...grid];
     console.log("Generation 0:");
     console.log(initialGeneration);
-    async function startLoop() {
-        let generationCount = 1;
-        while (true) {
-            const nextGeneration = calculateNextGeneration(initialGeneration);
-            console.log("Generation " + generationCount + ":");
-            console.log(nextGeneration);
-            initialGeneration = nextGeneration;
-            await sleep(1000);
-            generationCount++;
-        }
-    }
-    startLoop();
+    let generationCount = 1;
+    const intervalId = setInterval(() => {
+        const nextGeneration = calculateNextGeneration(initialGeneration);
+        console.log("Generation " + generationCount + ":");
+        console.log(nextGeneration);
+        initialGeneration = nextGeneration;
+        generationCount++;
+    }, 1000);
 }
 
 const generation0: number[][] = [[1, 0, 1, 1],
@@ -74,4 +61,11 @@ const generation0: number[][] = [[1, 0, 1, 1],
 [0, 0, 0, 0]
 ];
 
-main(generation0);
+const generation0b: number[][] = [[0, 0, 0, 0, 0, 0],
+[0, 1, 0, 0, 1, 0],
+[0, 1, 0, 0, 1, 0],
+[0, 1, 0, 0, 1, 0],
+[0, 0, 0, 0, 0, 0]
+]
+
+main(generation0b);
