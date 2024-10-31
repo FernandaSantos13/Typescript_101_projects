@@ -44,29 +44,15 @@ const calculateNextGeneration = (grid: number[][]) => {
 }  // Calculates the next generation using the returns of functions calculateNeighbourSum() and updateCellStatus()
 
 
-const main = (grid: number[][]) => {
-    let initialGeneration = [...grid];
-    console.log("Generation 0:");
-    console.log(initialGeneration);
-    let generationCount = 1;
-    const intervalId = setInterval(() => {
-        const nextGeneration = calculateNextGeneration(initialGeneration);
-        console.log("Generation " + generationCount + ":");
-        console.log(nextGeneration);
-        initialGeneration = nextGeneration;
-        generationCount++;
-    }, 1000);
-}
-
-
-/*const main = (grid: number[][], generation = 0) => {
+const main = (grid: number[][], generation = 0) => {
     console.log(`Generation: ${generation}`);
     console.log(grid);
     const intervalId = setInterval(() => {
         const nextGeneration = calculateNextGeneration(grid);
-        main(nextGeneration,generation+1);
+        clearInterval(intervalId);
+        main(nextGeneration, generation=generation+1);
     }, 1000);
-}*/
+}
 
 const generation0: number[][] = [[1, 0, 1, 1],
 [1, 1, 0, 0],
