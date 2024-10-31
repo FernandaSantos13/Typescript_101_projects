@@ -1,3 +1,9 @@
+const getGridSize = (grid: number[][]) => {
+    const colMax = grid[0].length-1;
+    const rowMax = grid.length-1;
+    return { rowMax, colMax }
+}
+
 const updateCellStatus = (currentCellStatus: number, neighbourSum: number) => {
     if (currentCellStatus === 1 && neighbourSum > 3) {
         return 0;
@@ -11,14 +17,13 @@ const updateCellStatus = (currentCellStatus: number, neighbourSum: number) => {
     return currentCellStatus;
 } //Apply the conditions for updating the status of a cell 
 
-const calculateNeighbourSum = (grid: number[][], colIndex: number, rowIndex: number) => {
+const calculateNeighbourSum = (grid: number[][], rowIndex: number, colIndex: number) => {
     let neighbourSum = 0;
-    for (let i = colIndex - 1; i <= colIndex + 1; i++) {
-        for (let j = rowIndex - 1; j <= rowIndex + 1; j++) {
+    const gridSize = getGridSize(grid);
+    for (let j = Math.max(rowIndex - 1, 0); j <= Math.min(rowIndex + 1, gridSize.rowMax); j++) {
+        for (let i = Math.max(colIndex - 1, 0); i <= Math.min(colIndex + 1, gridSize.colMax); i++) {
             if (i === colIndex && j === rowIndex) continue;
-            if (i >= 0 && i < grid[0].length && j >= 0 && j < grid.length) {
-                neighbourSum += grid[j][i];
-            }
+            neighbourSum += grid[j][i];
         }
     }
     return neighbourSum;
@@ -30,14 +35,13 @@ const calculateNextGeneration = (grid: number[][]) => {
     grid.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
             const currentCellStatus = value;
-            const neighbourSum: number = calculateNeighbourSum(grid, colIndex, rowIndex);
+            const neighbourSum: number = calculateNeighbourSum(grid, rowIndex, colIndex);
             const newCellStatus: number = updateCellStatus(currentCellStatus, neighbourSum);
             nextGeneration[rowIndex][colIndex] = newCellStatus;
         });
     });
     return nextGeneration;
 }  // Calculates the next generation using the returns of functions calculateNeighbourSum() and updateCellStatus()
-
 
 
 const main = (grid: number[][]) => {
@@ -54,6 +58,16 @@ const main = (grid: number[][]) => {
     }, 1000);
 }
 
+
+/*const main = (grid: number[][], generation = 0) => {
+    console.log(`Generation: ${generation}`);
+    console.log(grid);
+    const intervalId = setInterval(() => {
+        const nextGeneration = calculateNextGeneration(grid);
+        main(nextGeneration,generation+1);
+    }, 1000);
+}*/
+
 const generation0: number[][] = [[1, 0, 1, 1],
 [1, 1, 0, 0],
 [1, 1, 0, 1],
@@ -68,4 +82,4 @@ const generation0b: number[][] = [[0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0]
 ]
 
-main(generation0b);
+main(generation0);
